@@ -1,4 +1,4 @@
-import {defineField, defineType} from 'sanity'
+import { defineField, defineType } from 'sanity'
 
 export default defineType({
   name: 'post',
@@ -21,10 +21,21 @@ export default defineType({
       },
     }),
     defineField({
-      name: 'excerpt',
-      title: 'Excerpt',
-      type: 'text',
-      rows: 4,
+      name: 'tags',
+      type: 'array',
+      title: 'Tags',
+      of: [{ type: 'string' }],
+      options: {
+        layout: 'tags', // This gives a "tag input" UI
+      },
+    }),
+    defineField({
+      name: 'date',
+      title: 'Date',
+      type: 'date', // ✅ built-in date type
+      options: {
+        dateFormat: 'YYYY-MM-DD',
+      },
     }),
     defineField({
       name: 'mainImage',
@@ -33,6 +44,17 @@ export default defineType({
       options: {
         hotspot: true,
       },
+    }),
+        defineField({
+      name: 'gallery',
+      title: 'Gallery',
+      type: 'array',
+      of: [
+        {
+          type: 'image',
+          options: { hotspot: true }, // optional: enables focal point editing
+        },
+      ],
     }),
     defineField({
       name: 'body',
@@ -47,8 +69,9 @@ export default defineType({
       media: 'mainImage',
     },
     prepare(selection) {
-      const {author} = selection
-      return {...selection, subtitle: author && `by ${author}`}
+      const { author } = selection
+      return { ...selection, subtitle: author && `by ${author}` }
     },
   },
 })
+ 
