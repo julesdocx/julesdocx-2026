@@ -16,7 +16,7 @@
 </script>
 
 <section class="">
-  <h1 class="text-5xl md:text-7xl tracking-tighter font-bold mb-8 mt-6">
+  <h1 class="text-5xl md:text-7xl tracking-tighter font-bold mb-8 md:mt-6 mt-2">
     <span class="underline">Design</span>, <span class="text-chart-2 underline">Frontend Development</span>  &   <span class="text-chart-5 tracking-widest underline">Art</span> <span class="text-chart-1">with care.</span><img class="ml-2 md:ml-6 w-[80px] md:w-[100px] inline" src="/family.svg" alt="Family" />
   </h1>
 

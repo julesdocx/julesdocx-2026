@@ -1,5 +1,6 @@
 <script lang="ts">
   import * as Carousel from '$lib/components/ui/carousel';
+  import { Skeleton } from '$lib/components/ui/skeleton';
   import * as Card from '$lib/components/ui/card';
   import { Progress } from '$lib/components/ui/progress';
   import { urlFor } from '$lib/sanity/image';
@@ -36,12 +37,17 @@
       {#each images ?? [] as image, index (image._key)}
         <Carousel.Item>
           <Card.Root>
-            <Card.Content class="flex aspect-video items-center justify-center p-0">
+            <Card.Content class="flex aspect-video items-center justify-center p-0 relative">
+              <Skeleton class="absolute bg-grey w-full h-full rounded" />
               <img
                 src={urlFor(image).width(800).quality(95).url()}
-                alt={image.alt ?? post.title}
+                alt=" "
                 class="w-full h-full object-contain"
                 loading="lazy"
+                onload={(e) => {
+                    (e.currentTarget.previousElementSibling as HTMLElement).style.display = 'none';
+                    e.currentTarget.style.opacity = '1';
+                }}
               />
             </Card.Content>
           </Card.Root>
