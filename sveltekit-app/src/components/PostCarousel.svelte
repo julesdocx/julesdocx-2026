@@ -38,9 +38,10 @@
           <Card.Root>
             <Card.Content class="flex aspect-video items-center justify-center p-0">
               <img
-                src={urlFor(image).url()}
+                src={urlFor(image).width(800).quality(95).url()}
                 alt={image.alt ?? post.title}
                 class="w-full h-full object-contain"
+                loading="lazy"
               />
             </Card.Content>
           </Card.Root>
