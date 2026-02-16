@@ -34,7 +34,7 @@
 <div class=" py-4">
   <Carousel.Root class="w-full" setApi={onInit} opts={{ loop: true }}>
     <Carousel.Content>
-      {#each images ?? [] as image, index (image._key)}
+      {#each images ?? [] as image: any, index (image._key)}
         <Carousel.Item>
           <Card.Root>
             <Card.Content class="flex aspect-video items-center justify-center p-0 relative">
@@ -46,7 +46,6 @@
                 loading="lazy"
                 onload={(e) => {
                     (e.currentTarget.previousElementSibling as HTMLElement).style.display = 'none';
-                    e.currentTarget.style.opacity = '1';
                 }}
               />
             </Card.Content>

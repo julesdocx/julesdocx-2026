@@ -1,13 +1,8 @@
 <script lang="ts">
   import { onMount, onDestroy } from 'svelte';
-  import { FastForward, Music, Pause } from '@lucide/svelte';
+  import MusicPlayer from './MusicPlayer.svelte';
 
   let time = $state('');
-  let isPlaying = $state(false);
-  let audio: HTMLAudioElement | null = null;
-  let interval: ReturnType<typeof setInterval>;
-
-  const MUSIC_URL = 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3';
 
   function updateTime() {
     time = new Intl.DateTimeFormat('en-GB', {
@@ -19,26 +14,6 @@
     }).format(new Date());
   }
 
-  function toggleMusic() {
-    if (!audio) audio = new Audio(MUSIC_URL);
-
-    if (isPlaying) {
-      audio.pause();
-    } else {
-      audio.play();
-    }
-    isPlaying = !isPlaying;
-  }
-
-  onMount(() => {
-    updateTime();
-    interval = setInterval(updateTime, 1000);
-  });
-
-  onDestroy(() => {
-    clearInterval(interval);
-    audio?.pause();
-  });
 </script>
 
 <header class="header">
@@ -69,19 +44,7 @@
       </a>
     </nav>
 
-    <button
-      class="header__music"
-      class:playing={isPlaying}
-      onclick={toggleMusic}
-      aria-label={isPlaying ? 'Pause music' : 'Play music'}
-    >
-    <!-- <span class="header__music-label">{isPlaying ? 'Pause' : 'Music'}</span> -->
-     {#if isPlaying}
-        <Pause size={13} class="mr-2" /><FastForward size={13} />
-      {:else}
-        <Music size={13} />
-      {/if}
-    </button>
+    <MusicPlayer />
   </div>
 </header>
 
