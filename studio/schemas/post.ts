@@ -21,6 +21,31 @@ export default defineType({
       },
     }),
     defineField({
+      name: 'link',
+      title: 'Link',
+      type: 'object',
+      fields: [
+        defineField({
+          name: 'href',
+          title: 'URL',
+          type: 'url',
+          validation: (Rule) =>
+            Rule.uri({ allowRelative: false, scheme: ['https', 'http', 'mailto', 'tel'] }),
+        }),
+        defineField({
+          name: 'blank',
+          title: 'Open in new tab',
+          type: 'boolean',
+          initialValue: true,
+        }),
+        defineField({
+          name: 'text',
+          title: 'Link text (optional)',
+          type: 'string',
+        }),
+      ],
+    }),
+    defineField({
       name: 'tags',
       type: 'array',
       title: 'Tags',
@@ -45,7 +70,7 @@ export default defineType({
         hotspot: true,
       },
     }),
-        defineField({
+      defineField({
       name: 'gallery',
       title: 'Gallery',
       type: 'array',
