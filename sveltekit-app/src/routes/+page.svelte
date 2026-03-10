@@ -65,9 +65,9 @@
       <div class="hidden cursor-pointer md:flex md:justify-end justify-start  w-full">
         <ButtonGroup.Root aria-label="Button group">
           {#each post.tags ?? [] as tag}
-            <Button variant="outline" class="rounded-full px-4 h-6 text-xs">{tag}</Button>
+            <Button variant="outline" class="rounded-full px-4 h-6 text-xs hover:bg-white">{tag}</Button>
           {/each}
-          <Button variant="outline" class="rounded-full h-6 text-xs">
+          <Button variant="outline" class="rounded-full h-6 text-xs hover:bg-white">
             {new Date(post.date).getFullYear()}
           </Button>
         </ButtonGroup.Root>
@@ -77,13 +77,13 @@
 
   <!-- Thumbnail images — hidden when expanded -->
   {#if openPost !== post._id}
-    <div class="flex justify-start md:justify-start  flex-wrap md:gap-2 group">
+    <div class="grid w-full md:w-auto grid-cols-4 items-start md:flex justify-start md:justify-start gap-2 flex-wrap md:gap-2 group">
       {#if post.mainImage}
         <button type="button" onclick={() => togglePost(post._id, 0)}>
             <img
               src={urlFor(post.mainImage).width(200).quality(80).url()}
               alt={post.title}
-              class="w-[100px] h-[100px] p-1 scale-90 md:scale-100 object-contain border border-grey-400
+              class="md:w-[100px] md:h-[100px] p-1 object-contain border border-grey-400
                 hover:shadow-none hover:inset-shadow-sm group-hover:ring-1 hover:rounded-xl ring-primary inset-shadow-grey transition-all duration-200"
               loading="lazy"
             />
@@ -95,7 +95,7 @@
           <img
             src={urlFor(image).width(200).quality(80).url()}
             alt={post.title}
-            class="w-[100px] h-[100px] p-1 scale-90 md:scale-100 object-contain border border-grey-400
+            class="md:w-[100px] md:h-[100px] p-1 object-contain border border-grey-400
                 hover:shadow-none hover:inset-shadow-sm group-hover:ring-1 hover:rounded-xl ring-primary inset-shadow-grey transition-all duration-200"
             loading="lazy"
           />
