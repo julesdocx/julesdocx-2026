@@ -6,32 +6,40 @@
   import { urlFor } from '$lib/sanity/image';
   import type { Post } from '$lib/sanity/queries';
 
-  let { post }: { post: Post } = $props();
-
-  let current = $state(0);
+  const { post, initialIndex = 0 } = $props();
+  
+  let currentIndex = $state(0); // 0-based, for display/progress
   let count = $state(0);
 
   function onInit(api: any) {
     count = api.scrollSnapList().length;
-    current = api.selectedScrollSnap() + 1;
+
+    // Scroll to the clicked thumbnail immediately
+    if (initialIndex > 0) {
+      api.scrollTo(initialIndex, true); // true = jump without animation
+    }
+
+    currentIndex = api.selectedScrollSnap();
+
     api.on('select', () => {
-      current = api.selectedScrollSnap() + 1;
+      currentIndex = api.selectedScrollSnap();
     });
     api.on('reInit', () => {
       count = api.scrollSnapList().length;
+      currentIndex = api.selectedScrollSnap();
     });
   }
 
-  const progress = $derived((current * 100) / count);
+  // progress is 1-based percentage
+  const progress = $derived(((currentIndex + 1) * 100) / count);
 
   const images = $derived([
-  ...(post.mainImage ? [{ asset: post.mainImage.asset, _key: 'main', alt: post.title }] : []),
-  ...(post.gallery ?? [])
-]);
-
+    ...(post.mainImage ? [{ asset: post.mainImage.asset, _key: 'main', alt: post.title }] : []),
+    ...(post.gallery ?? [])
+  ]);
 </script>
 
-<div class=" py-4">
+<div class=" mb-2">
   <Carousel.Root class="w-full" setApi={onInit} opts={{ loop: true }}>
     <Carousel.Content>
       {#each images ?? [] as image: any, index (image._key)}
@@ -40,7 +48,7 @@
             <Card.Content class="flex aspect-video items-center justify-center p-0 relative">
               <Skeleton class="absolute bg-grey w-full h-full rounded" />
               <img
-                src={urlFor(image).width(800).quality(95).url()}
+                src={urlFor(image).width(1000).quality(100).url()}
                 alt=" "
                 class="w-full h-full object-contain"
                 loading="lazy"
@@ -51,7 +59,7 @@
             </Card.Content>
           </Card.Root>
         </Carousel.Item>
-      {/each}
+        {/each}
     </Carousel.Content>
     <Carousel.Previous class="top-[calc(100%+0.5rem)] left-0 translate-y-0" />
     <Carousel.Next class="top-[calc(100%+0.5rem)] left-2 translate-x-full translate-y-0" />

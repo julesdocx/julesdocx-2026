@@ -27,7 +27,7 @@
 				</a>
 			{/if}
 
-			<div class="min-h-screen max-w-3xl mx-auto px-6 flex flex-col">
+			<div class="min-h-screen w-full md:w-4xl lg:w-5xl mx-auto px-6 flex flex-col">
 				<Header />
 				<main class="flex-1">
 					{@render children()}

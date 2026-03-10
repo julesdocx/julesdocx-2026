@@ -60,7 +60,7 @@
   .header__title {
     font-size: 1rem;
     font-weight: 600;
-    color: var(--primary);
+    /* color: var(--primary); */
     text-decoration: underline;
     letter-spacing: -0.02em;
     transition: color 0.2s;
@@ -77,7 +77,7 @@
   .header__time {
     font-size: 0.8rem;
     font-variant-numeric: tabular-nums;
-    color: var(--secondary);
+    /* color: var(--secondary); */
     letter-spacing: 0.03em;
   }
 
@@ -93,14 +93,14 @@
     align-items: center;
     gap: 0.35rem;
     font-size: 0.8rem;
-    color: var(--foreground);
+    /* color: var(--foreground); */
     text-decoration: none;
     transition: color 0.2s;
     text-decoration: underline;
   }
 
   .header__social-link:hover {
-    color: var(--foreground);
+    /* color: var(--foreground); */
   }
 
   /* Music button */
@@ -109,14 +109,14 @@
     align-items: center;
     gap: 2px;
     background: transparent;
-    color: var(--chart-3);
+    /* color: var(--chart-3); */
     font-size: 0.8rem;
     cursor: pointer;
     transition: all 0.2s;
   }
 
   .arena {
-    color: var(--chart-4);
+    /* color: var(--chart-4); */
 
   }
 

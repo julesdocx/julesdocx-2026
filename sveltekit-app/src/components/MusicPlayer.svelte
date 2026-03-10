@@ -84,7 +84,7 @@
     display: flex;
     align-items: center;
     background: transparent;
-    color: var(--chart-3);
+    /* color: var(--chart-3); */
     cursor: pointer;
     padding: 2px;
     transition: color 0.2s;

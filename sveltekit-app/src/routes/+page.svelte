@@ -1,10 +1,29 @@
 <script lang="ts">
   import {useQuery} from '@sanity/sveltekit'
   import Card from '../components/Card.svelte'
+  import { ArrowRight, X } from '@lucide/svelte';
+
   import type {PageProps} from './$types'
+  import * as ButtonGroup from "$lib/components/ui/button-group/index.js";
   import * as Accordion from '$lib/components/ui/accordion';
+  import { Button } from "$lib/components/ui/button/index.js";
+  import { Badge } from "$lib/components/ui/badge/index.js";
   import {urlFor} from '$lib/sanity/image'
   import PostCarousel from '../components/PostCarousel.svelte'; 
+  import { PortableText } from '@portabletext/svelte'; // if you have this
+    import { text } from '@sveltejs/kit';
+
+  let openPost = $state<string | null>(null);
+  let openImageIndex = $state<number>(0);
+
+  function togglePost(id: string, index: number = 0) {
+    if (openPost === id) {
+      openPost = null;
+    } else {
+      openPost = id;
+      openImageIndex = index;
+    }
+  }
 
   const {data}: PageProps = $props()
   const query = $derived(useQuery(data))
@@ -15,46 +34,85 @@
 
 </script>
 
-<section class="">
-  <h1 class="text-5xl md:text-7xl tracking-tighter font-bold mb-8 md:mt-6 mt-2">
-    <span class="underline">Design</span>, <span class="text-chart-2 underline">Frontend Development</span>  &   <span class="text-chart-5 tracking-widest underline">Art</span> <span class="text-chart-1">with care.</span><img class="ml-2 md:ml-6 w-[80px] md:w-[100px] inline" src="/family.svg" alt="Family" />
-  </h1>
+<section class="flex flex-wrap gap-2">
+  <!-- <h1 class="text-5xl md:text-8xl tracking-tighter font-bold mb-8 my-16 opacity-10">
+    <span class="">Design</span>, <span class=" ">Frontend Development</span> & <span class=" ">Art</span> 
+  </h1> -->
 
-  <Accordion.Root type="single" collapsible>
-  {#each sorted as post: Post}
-    <Accordion.Item value={post._id}>
-      <Accordion.Trigger>
-        <div class="grid grid-cols-2 w-full">
-          <div class="font-bold">
-            {post.title}
-          </div>
-          <div class="flex gap-1 wrap">
-            {#each post.tags ?? [] as tag}
-              <div class="text-muted-foreground">
-                {tag}
-              </div> 
-            {/each}
-          </div>  
+ {#each sorted as post: Post}
+  {#if openPost === post._id}
+    <div class="flex md:grid md:grid-cols-3 w-full mt-4 items-center text-left mt-6">
+      <button
+        type="button"
+        class="cursor-pointer text-left flex items-center gap-1 w-full group"
+        onclick={() => togglePost(post._id, 0)}
+      >
+        <X size={16} class="relative -top-0.5" />
+        <h2 class="font-bold text-sm md:text-md mr-4">{post.title}</h2>
+      </button>
+      {#if post.link?.href}
+      <a href={post.link?.href} class="flex md:justify-center justify-end md:text-center md:w-full  hover:no-underline underline text-sm text-secondary" target="_blank">
+        {#if post.link?.text}
+          {post.link?.text}
+        {:else}
+          {post.link?.href}
+        {/if}  
+        <ArrowRight size={16} class="ml-2 " />
+      </a>
+      {:else}
+      <div></div>
+      {/if}
+      <div class="hidden cursor-pointer md:flex md:justify-end justify-start  w-full">
+        <ButtonGroup.Root aria-label="Button group">
+          {#each post.tags ?? [] as tag}
+            <Button variant="outline" class="rounded-full px-4 h-6 text-xs">{tag}</Button>
+          {/each}
+          <Button variant="outline" class="rounded-full h-6 text-xs">
+            {new Date(post.date).getFullYear()}
+          </Button>
+        </ButtonGroup.Root>
+      </div>
+    </div>
+  {/if}
+
+  <!-- Thumbnail images — hidden when expanded -->
+  {#if openPost !== post._id}
+    <div class="flex justify-start md:justify-start  flex-wrap md:gap-2 group">
+      {#if post.mainImage}
+        <button type="button" onclick={() => togglePost(post._id, 0)}>
+            <img
+              src={urlFor(post.mainImage).width(200).quality(80).url()}
+              alt={post.title}
+              class="w-[100px] h-[100px] p-1 scale-90 md:scale-100 object-contain border border-grey-400
+                hover:shadow-none hover:inset-shadow-sm group-hover:ring-1 hover:rounded-xl ring-primary inset-shadow-grey transition-all duration-200"
+              loading="lazy"
+            />
+        </button>
+      {/if}
+
+      {#each post.gallery ?? [] as image, i}
+        <button type="button" onclick={() => togglePost(post._id, i + 1)}>
+          <img
+            src={urlFor(image).width(200).quality(80).url()}
+            alt={post.title}
+            class="w-[100px] h-[100px] p-1 scale-90 md:scale-100 object-contain border border-grey-400
+                hover:shadow-none hover:inset-shadow-sm group-hover:ring-1 hover:rounded-xl ring-primary inset-shadow-grey transition-all duration-200"
+            loading="lazy"
+          />
+        </button>
+      {/each}
+    </div>
+  {/if}
+
+  {#if openPost === post._id}
+    <div class="w-full mt-4 mb-8">
+      <PostCarousel {post} initialIndex={openImageIndex} />
+      {#if post.body}
+        <div class="prose mt-6 max-w-none text-sm/8">
+          <PortableText value={post.body} />
         </div>
-      </Accordion.Trigger>
-      <Accordion.Content>
-        <PostCarousel {post} />
-      </Accordion.Content>
-    </Accordion.Item>
-  {/each}
-</Accordion.Root>
+      {/if}
+    </div>
+  {/if}
+{/each}
 </section>
-
-<style>
-  .home {
-    display: flex;
-    flex-direction: column;
-    flex-wrap: wrap;
-    width: 650px;
-  }
-  .home__container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.2rem;
-  }
-</style>

@@ -7,6 +7,13 @@ export const postQuery = groq`*[_type == "post" && slug.current == $slug][0]`
 export const postsQuery = groq`*[_type == "post" && defined(slug.current)] | order(_createdAt desc)`
 
 
+export interface Link {
+  _type: 'link'
+  href: string
+  blank?: boolean
+  text?: string
+}
+
 export interface Post {
   _type: 'post'
   _id: string
@@ -14,6 +21,7 @@ export interface Post {
   title?: string
   slug: Slug
   date: string
+  link?: Link
   mainImage?: ImageAsset
   body: PortableTextBlock[]
   tags?: string[]
