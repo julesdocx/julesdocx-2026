@@ -83,8 +83,8 @@
             <img
               src={urlFor(post.mainImage).width(200).quality(80).url()}
               alt={post.title}
-              class="md:w-[100px] md:h-[100px] p-1 object-contain border border-grey-400
-                hover:shadow-none hover:inset-shadow-sm group-hover:ring-1 hover:rounded-xl ring-primary inset-shadow-grey transition-all duration-200"
+              class="md:w-[100px] md:h-[100px] p-1 rounded-xl shadow-md object-contain border border-grey-400
+                hover:shadow-none hover:inset-shadow-sm hover:ring-2 group-hover:rounded-xs ring-black inset-shadow-grey transition-all duration-200"
               loading="lazy"
             />
         </button>
@@ -95,8 +95,8 @@
           <img
             src={urlFor(image).width(200).quality(80).url()}
             alt={post.title}
-            class="md:w-[100px] md:h-[100px] p-1 object-contain border border-grey-400
-                hover:shadow-none hover:inset-shadow-sm group-hover:ring-1 hover:rounded-xl ring-primary inset-shadow-grey transition-all duration-200"
+            class="md:w-[100px] md:h-[100px] p-1 rounded-xl shadow-md object-contain border border-grey-400
+                hover:shadow-none hover:inset-shadow-sm hover:ring-2 group-hover:rounded-xs ring-black inset-shadow-grey transition-all duration-200"
             loading="lazy"
           />
         </button>

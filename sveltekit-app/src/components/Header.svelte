@@ -2,6 +2,7 @@
   import { onMount, onDestroy } from 'svelte';
   import MusicPlayer from './MusicPlayer.svelte';
   import RollingText from './RollingText.svelte';
+  import Fireworks from './Fireworks.svelte';
 
   let time = $state('');
 
@@ -20,12 +21,13 @@
   const interval = setInterval(updateTime, 1000);
   return () => clearInterval(interval);
 });
-
+  let fireworks: ReturnType<typeof Fireworks>;
 </script>
 
+<Fireworks bind:this={fireworks} />
 <header class="header">
   <div class="header__left">
-  <a class="button" href="/">
+  <a class="button" href="/" onclick={(e) => { e.preventDefault(); fireworks.launch_fireworks(); }}>
     <div class="button-outer">
       <div class="button-inner">
         <span>julesdocx.be</span>
