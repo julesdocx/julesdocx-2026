@@ -4,6 +4,7 @@
   import RollingText from './RollingText.svelte';
   import Fireworks from './Fireworks.svelte';
 
+  let pressed = $state(false);
   let time = $state('');
 
   function updateTime() {
@@ -21,13 +22,21 @@
   const interval = setInterval(updateTime, 1000);
   return () => clearInterval(interval);
 });
-  let fireworks: ReturnType<typeof Fireworks>;
+
+  let fireworks: any;
+  
+    function handleTitleClick(e: MouseEvent) {
+    e.preventDefault();
+    pressed = !pressed;
+    if (pressed) fireworks.launch_fireworks();
+    else fireworks.stop_fireworks();
+  }
 </script>
 
 <Fireworks bind:this={fireworks} />
 <header class="header">
   <div class="header__left">
-  <a class="button" href="/" onclick={(e) => { e.preventDefault(); fireworks.launch_fireworks(); }}>
+  <a class="button" href="/" class:pressed onclick={handleTitleClick}>
     <div class="button-outer">
       <div class="button-inner">
         <span>julesdocx.be</span>
@@ -284,6 +293,32 @@
 }
 
 .button:active .button-inner {
+  transform: scale(0.975);
+}
+
+.button.pressed .button-outer {
+  box-shadow:
+    0 0 0 0 rgba(5, 5, 5, 1),
+    0 0 0 0 rgba(5, 5, 5, 0.5),
+    0 0 0 0 rgba(5, 5, 5, 0.25);
+}
+
+.button.pressed .button-inner {
+  clip-path: inset(
+    clamp(1px, 0.0625em, 2px) clamp(1px, 0.0625em, 2px)
+    clamp(1px, 0.0625em, 2px) clamp(1px, 0.0625em, 2px) round 100em
+  );
+  box-shadow:
+    0.1em 0.15em 0.05em 0 inset rgba(5, 5, 5, 0.75),
+    -0.025em -0.03em 0.05em 0.025em inset rgba(5, 5, 5, 0.5),
+    0.25em 0.25em 0.2em 0 inset rgba(5, 5, 5, 0.5),
+    0 0 0.05em 0.5em inset rgba(255, 255, 255, 0.15),
+    0 0 0 0 inset rgba(255, 255, 255, 1),
+    0.12em 0.12em 0.12em inset rgba(255, 255, 255, 0.25),
+    -0.075em -0.12em 0.2em 0.1em inset rgba(5, 5, 5, 0.25);
+}
+
+.button.pressed .button-inner span {
   transform: scale(0.975);
 }
 </style>

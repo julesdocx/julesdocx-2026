@@ -91,22 +91,18 @@
     stars[N + "r"].style.top = oldy + "px";
   }
 
-  export function launch_fireworks() {
-    // clear any previous
+export function launch_fireworks() {
     destroy();
+    swide = window.innerWidth;
+    shigh = window.innerHeight;
 
     boddie = document.createElement("div");
     boddie.style.cssText = "position:fixed;top:0;left:0;overflow:visible;width:1px;height:1px;pointer-events:none;z-index:9999;";
     document.body.appendChild(boddie);
 
-    swide = window.innerWidth;
-    shigh = window.innerHeight;
-
     for (let i = 0; i < bangs; i++) {
-      // rocket
       stars[i + "r"] = createDiv("|", 12);
       boddie.appendChild(stars[i + "r"]);
-      // bits
       for (let j = bits * i; j < bits + bits * i; j++) {
         stars[j] = createDiv("*", 13);
         boddie.appendChild(stars[j]);
@@ -114,9 +110,11 @@
       launch(i);
       intervals.push(setInterval(() => stepthrough(i), speed));
     }
+    // no setTimeout(destroy) here anymore
+  }
 
-    // auto-cleanup after 5s
-    setTimeout(destroy, 5000);
+  export function stop_fireworks() {
+    destroy();
   }
 
   function destroy() {
